@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 from constants import *
 from circleshape import CircleShape
 from shot import Shot
@@ -56,3 +57,11 @@ class Player(CircleShape):
         shot = Shot(self.position, self.position)
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation)
         shot.velocity *= PLAYER_SHOOT_SPEED
+
+    def death(self):
+        angle = 40
+        vector = pygame.Vector2(0, 1)
+        for i in range(9):
+            new_velocity = vector.rotate((angle + random.uniform(0, 10)) * i)
+            new_shot = Shot(self.position, self.position)
+            new_shot.velocity = new_velocity * 25 * random.uniform(4, 6)

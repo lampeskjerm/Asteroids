@@ -79,6 +79,7 @@ def main():
             if asteroid.collides_with(player) == True:
                 log_event("player_hit")
                 player.kill()
+                player.death()
                 is_game_over = True
                 if kills > highscore:
                     highscore = kills
@@ -113,9 +114,11 @@ def main():
         else:
         # Display game over screen / menu
             for asteroid in asteroids:
-                asteroid.kill()
+                asteroid.death()
             menu.update(screen, kills, highscore)
             if menu.update(screen, kills, highscore) == "new game":
+                for shot in shots:
+                    shot.kill()
                 is_game_over = False
                 kills = 0
                 player = Player(x=SCREEN_WIDTH/2, y=SCREEN_HEIGHT/2)

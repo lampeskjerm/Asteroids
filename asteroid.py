@@ -3,6 +3,7 @@ import random
 from logger import log_event
 from circleshape import CircleShape
 from constants import *
+from shot import Shot
 
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius):
@@ -17,11 +18,11 @@ class Asteroid(CircleShape):
         self.position += self.velocity * dt
 
     def shrink(self):
-        self.kill()
-        
         if self.radius <= ASTEROID_MIN_RADIUS:
+            self.death()
             return
         else:
+            self.kill()
             log_event("asteroid_split")
             angle = random.uniform(20, 50)
             new_velocity = self.velocity.rotate(angle)
@@ -52,4 +53,10 @@ class Asteroid(CircleShape):
         self.velocity = self.velocity.rotate(angle_to_other - 180)
         other.velocity = other.velocity.rotate(angle_to_self - 180)
 
-        
+    def death(self):
+        angle = 40
+        for i in range(9):
+            new_velocity = self.velocity.rotate((angle + random.uniform(0, 10)) * i)
+            new_shot = Shot(self.position, self.position)
+            new_shot.velocity = new_velocity * random.uniform(4, 6)
+        self.kill()
