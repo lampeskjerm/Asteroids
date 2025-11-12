@@ -30,12 +30,9 @@ class Asteroid(CircleShape):
             new_asteroid = Asteroid(self.position, self.position, new_radius)
             new_asteroid.velocity = new_velocity * random.uniform(1.25, 1.75)
 
+
     def merge(self, other):
-        if self.radius <= other.radius:
-            return
-        elif self.radius == ASTEROID_MAX_RADIUS *2:
-            self.bounce(other)
-        elif self.radius > other.radius and self.radius <= ASTEROID_MAX_RADIUS * 2:
+        if self.radius >= other.radius and self.radius <= ASTEROID_MAX_RADIUS * 2:
             log_event("asteroid_merge")
             self.kill()
             other.kill()
@@ -46,6 +43,9 @@ class Asteroid(CircleShape):
             else:
                 new_asteroid = Asteroid(self.position, other.position, ASTEROID_MAX_RADIUS * 2)
             new_asteroid.velocity = new_velocity * random.uniform(0.75, 1)
+        else:
+            self.bounce(other)
+        
 
     def bounce(self, other):
         angle_to_other = self.position.angle_to(other.position)
@@ -54,9 +54,8 @@ class Asteroid(CircleShape):
         other.velocity = other.velocity.rotate(angle_to_self - 180)
 
     def death(self):
-        angle = 40
-        for i in range(9):
-            new_velocity = self.velocity.rotate((angle + random.uniform(0, 10)) * i)
+        for i in range(int(random.uniform(2, 9))):
+            new_velocity = self.velocity.rotate(random.uniform(40, 180) * i)
             new_shot = Shot(self.position, self.position)
             new_shot.velocity = new_velocity * random.uniform(4, 6)
         self.kill()

@@ -41,7 +41,7 @@ class Player(CircleShape):
                 pass
             else:
                 self.shoot()
-                self.shoot_cooldown = 0.3
+                self.shoot_cooldown = random.uniform(0.1, 1)
         if keys[pygame.K_ESCAPE]:
             sys.exit()
 
