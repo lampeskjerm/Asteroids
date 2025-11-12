@@ -1,4 +1,5 @@
 import pygame
+import sys
 from constants import *
 from circleshape import CircleShape
 from shot import Shot
@@ -18,7 +19,7 @@ class Player(CircleShape):
         return [a, b, c]
     
     def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), LINE_WIDTH)
+        pygame.draw.polygon(screen, "white", self.triangle(), PLAYER_LINE_WIDTH)
 
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt
@@ -40,6 +41,8 @@ class Player(CircleShape):
             else:
                 self.shoot()
                 self.shoot_cooldown = 0.3
+        if keys[pygame.K_ESCAPE]:
+            sys.exit()
 
         self.shoot_cooldown -= dt
 
